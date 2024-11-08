@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm Tra Dữ Liệu</title>
+</head>
+<body>
+
+    <h2>Form</h2>
+
+    <form onsubmit="return validateInput(document.getElementById('userInput').value)">
+        <label for="userInput">Nhập dữ liệu (tối đa 50 ký tự): </label>
+        <input type="text" id="userInput" name="userInput">
+        <input type="submit" value="Gửi">
+    </form>
+
+    <script>
+        function validateInput(input) {
+            if (input.length > 50) {
+                alert("Dữ liệu nhập vào vượt quá giới hạn 50 ký tự!");
+                return false;  
+            }
+            return true;  
+        }
+    </script>
+
+</body>
+</html>
