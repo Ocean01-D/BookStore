@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky Navigation Bar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 20px;
+            z-index: 1000; 
+        }
+        .content {
+            padding: 20px;
+            height: 2000px; 
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a>Section 1</a> | 
+        </nav>
+    </header>
+    <div class="content">
+        <div id="section1" class="section">
+            <h2>Section 1</h2>
+            <p>Content for Section 1...</p>
+        </div>
+        <div id="section2" class="section">
+            <h2>Section 2</h2>
+            <p>Content for Section 2...</p>
+        </div>
+        <div id="section3" class="section">
+            <h2>Section 3</h2>
+            <p>Content for Section 3...</p>
+        </div>
+    </div>
+</body>
+</html>
