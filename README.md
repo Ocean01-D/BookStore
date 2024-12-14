@@ -1,1 +1,1 @@
-dự án vẫn đang trong quá trình phát triển 
+The project is still under development.
