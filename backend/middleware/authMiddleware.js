@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User"); // Assuming a User model is defined in your project
+const User = require("../models/User.js"); // Assuming a User model is defined in your project
 
 // @desc Protect routes and verify the user token
 const protect = async (req, res, next) => {
