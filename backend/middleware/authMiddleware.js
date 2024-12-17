@@ -1,41 +1,49 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User.js"); // Assuming a User model is defined in your project
 
-// @desc Protect routes and verify the user token
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+
+// Middleware bảo vệ route, kiểm tra token
 const protect = async (req, res, next) => {
   let token;
 
+  // Lấy token từ header (Authorization)
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Get user from the token
-      req.user = await User.findById(decoded.id).select("-password");
-
-      next();
-    } catch (error) {
-      res.status(401).json({ message: "Not authorized, token failed" });
-    }
+    token = req.headers.authorization.split(" ")[1];
+  }
+  // Lấy token từ cookies (nếu cần)
+  else if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
   }
 
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });
   }
+
+  try {
+    // Xác minh token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Lấy thông tin user từ token (trừ password)
+    req.user = await User.findById(decoded.id).select("-password");
+
+    next(); // Chuyển sang middleware hoặc route handler tiếp theo
+  } catch (error) {
+    console.error("Error verifying token:", error.message);
+    res.status(401).json({ message: "Not authorized, token failed" });
+  }
 };
 
-// @desc Middleware to check if user is an admin
-const admin = (req, res, next) => {
+// Middleware kiểm tra quyền admin
+const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
-    next();
+    next(); // Nếu là admin, tiếp tục
   } else {
     res.status(403).json({ message: "Not authorized as an admin" });
   }
 };
 
-module.exports = { protect, admin };
+// Export cả hai middleware
+module.exports = { protect, isAdmin };

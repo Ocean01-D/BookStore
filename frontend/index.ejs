@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Store Homepage</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Header -->
     <header class="bg-success text-white py-2">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                <img src="public/images/icon.png" alt="Logo" class="me-3" style="height: 50px; width: auto;">
+                <img src="images/icon.png" alt="Logo" class="me-3" style="height: 50px; width: auto;">
                 <div>
                     <h1 class="h5 mb-0">CÔNG TY CỔ PHẦN XUẤT BẢN</h1>
                     <h2 class="h6 mb-0">VÀ TRUYỀN THÔNG </h2>
@@ -54,7 +54,7 @@
 
     <!-- Banner Section -->
     <div class="banner">     
-        <img src="public/images/design-01jezncz4p-1734082018.png" alt="Bookstore Banner" class="img-fluid">
+        <img src="images/design-01jezncz4p-1734082018.png" alt="Bookstore Banner" class="img-fluid">
     </div>
 
     <!-- Main Content -->
@@ -66,16 +66,16 @@
         </div>
         <div class="row mt-4" id="bookContainer">
             <!-- Dynamic book cards will appear here -->
-            <% Product.forEach(function(Product) { %>
+            <% Product.forEach(product => { %>      
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 book-card">
-                        <img src="<%= Product.image %>" class="card-img-top" alt="<%= Product.title %>">
+                        <img src="<%= product.image %>" class="card-img-top" alt="<%= product.title %>">
                         <div class="card-body">
-                            <h5 class="card-title"><%= Product.title %></h5>
-                            <p class="card-text">Tác giả: <%= Product.author %></p>
-                            <p class="card-text">Năm: <%= Product.publishDate %></p>
-                            <p class="card-text">Nhà xuất bản: <%= Product.publisher %></p>
-                            <a href="book-details.html?id=<%= book.id %>" class="btn btn-primary">Xem chi tiết</a>
+                            <h5 class="card-title"><%= product.title %></h5>
+                            <p class="card-text">Tác giả: <%= product.author %></p>
+                            <p class="card-text">Năm: <%= product.publishDate %></p>
+                            <p class="card-text">Nhà xuất bản: <%= product.publisher %></p>
+                            <a href="/product/<%= product._id %>" class="btn btn-primary">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
@@ -101,14 +101,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="loginForm">
+                    <form id="loginForm" action="/api/users/login" method="POST">
                         <div class="mb-3">
-                            <label for="loginEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="loginEmail" required>
+                            <label for="loginEmail" class="form-label">Tên Đăng Nhập</label>
+                            <input type="email" class="form-control" id="loginEmail" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Mật Khẩu</label>
-                            <input type="password" class="form-control" id="loginPassword" required>
+                            <input type="password" class="form-control" id="loginPassword" name="password" required>
                         </div>
                         <button type="submit" class="btn btn-success w-100">Đăng Nhập</button>
                     </form>
@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <script src="public/script.js"></script>
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

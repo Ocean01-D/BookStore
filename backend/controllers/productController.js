@@ -29,40 +29,42 @@ const getProductById = async (req, res) => {
 // @route POST /api/products
 const createProduct = async (req, res) => {
   try {
-    const { name, description, price, stock, image } = req.body;
+    const { title, description, price, stock } = req.body; // Nhận trường 'title'
+    const image = req.file ? `/images/${req.file.filename}` : null; // Lấy đường dẫn ảnh từ multer
 
+    // Kiểm tra các trường bắt buộc
+    if (!title || !price) {
+      return res.status(400).json({ message: "Vui lòng điền đầy đủ tiêu đề và giá sản phẩm." });
+    }
+
+    // Tạo sản phẩm mới
     const newProduct = new Product({
-      name,
+      title,          // Thêm 'title' vào model
       description,
       price,
       stock,
-      image,
+      image,          // Đường dẫn ảnh
     });
 
-    const savedProduct = await newProduct.save();
-    res.status(201).json(savedProduct);
+    await newProduct.save();
+    res.redirect("/admin"); // Chuyển hướng về trang admin
   } catch (error) {
-    res.status(400).json({ message: "Invalid product data" });
+    console.error(error);
+    res.status(400).json({ message: error.message || "Dữ liệu sản phẩm không hợp lệ." });
   }
 };
+
+
 
 // @desc Update a product
 // @route PUT /api/products/:id
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedProduct) return res.status(404).json({ message: "Product not found" });
     res.status(200).json(updatedProduct);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Failed to update product." });
   }
 };
 
@@ -70,17 +72,28 @@ const updateProduct = async (req, res) => {
 // @route DELETE /api/products/:id
 const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    await product.remove();
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) return res.status(404).json({ message: "Product not found" });
     res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete product." });
+  }
+};
+
+
+// @desc Search products by name
+// @route GET /api/products/search  
+const searchProducts = async (req, res) => {
+  try {
+    const query = req.query.q || "";
+    const regex = new RegExp(query, "i"); // Tìm kiếm không phân biệt hoa thường
+    const products = await Product.find({ name: regex });
+    res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 module.exports = {
   getProducts,
@@ -88,4 +101,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProducts,
 };

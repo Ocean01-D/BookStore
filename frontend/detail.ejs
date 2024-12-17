@@ -26,16 +26,16 @@
         <div class="row">
             <div class="col-md-4">
                 <!-- Render Book Image -->
-                <img src="<%= Product.image %>" alt="<%= Product.title %>" class="img-fluid">
+                <img src="<%= product.image %>" alt="<%= product.title %>" class="img-fluid">
             </div>
             <div class="col-md-8">
                 <!-- Render Book Details -->
-                <h2><%= Product.title %></h2>
-                <p><strong>Tác giả:</strong> <%= Product.author %></p>
-                <p><strong>Năm xuất bản:</strong> <%= Product.publishDate %></p>
-                <p><strong>Nhà xuất bản:</strong> <%= Product.publisher %></p>
-                <p><strong>Mô tả:</strong> <%= Product.description %></p>
-                <p><strong>Giá:</strong> <span class="text-success"><%= Product.price %>₫</span></p>
+                <h2><%= product.title %></h2>
+                <p><strong>Tác giả:</strong> <%= product.author %></p>
+                <p><strong>Năm xuất bản:</strong> <%= product.publishDate %></p>
+                <p><strong>Nhà xuất bản:</strong> <%= product.publisher %></p>
+                <p><strong>Mô tả:</strong> <%= product.description %></p>
+                <p><strong>Giá:</strong> <span class="text-success"><%= product.price %>₫</span></p>
                 <button class="btn btn-success">Thêm vào giỏ hàng</button>
             </div>
         </div>
