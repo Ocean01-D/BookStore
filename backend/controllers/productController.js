@@ -60,25 +60,52 @@ const createProduct = async (req, res) => {
 // @route PUT /api/products/:id
 const updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedProduct) return res.status(404).json({ message: "Product not found" });
-    res.status(200).json(updatedProduct);
+    const { title, author, price, stock, description, publishDate, publisher } = req.body;
+    const image = req.file ? `/images/${req.file.filename}` : undefined; // Cập nhật ảnh nếu có file mới
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        author,
+        price,
+        stock,
+        description,
+        publishDate,
+        publisher,
+        ...(image && { image }), // Chỉ cập nhật `image` nếu có
+      },
+      { new: true, runValidators: true } // Trả về document sau khi cập nhật
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.redirect("/admin"); // Quay lại giao diện admin sau khi cập nhật
   } catch (error) {
-    res.status(500).json({ message: "Failed to update product." });
+    console.error(error);
+    res.status(500).json({ message: "Failed to update product" });
   }
 };
+
 
 // @desc Delete a product
 // @route DELETE /api/products/:id
 const deleteProduct = async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-    if (!deletedProduct) return res.status(404).json({ message: "Product not found" });
-    res.status(200).json({ message: "Product deleted successfully" });
+    if (!deletedProduct) {
+      return res.status(404).send("Product not found");
+    }
+    res.redirect('/admin'); // Quay lại giao diện admin sau khi xóa
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete product." });
+    console.error(error);
+    res.status(500).send("Failed to delete product.");
   }
 };
+
+
 
 
 // @desc Search products by name
@@ -87,12 +114,12 @@ const searchProducts = async (req, res) => {
   try {
     const query = req.query.q || "";
     const regex = new RegExp(query, "i"); // Tìm kiếm không phân biệt hoa thường
-    const products = await Product.find({ name: regex });
+    const products = await Product.find({ title: regex }); // Tìm kiếm theo title
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-};
+};  
 
 
 module.exports = {

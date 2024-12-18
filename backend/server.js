@@ -9,6 +9,7 @@ const connectDB = require("./config/db");  // Import the connectDB function
 const multer = require('multer');
 const Product = require("./models/Product"); // Import model Product
 const cookieParser = require('cookie-parser');
+const methodOverride = require("method-override");
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -23,6 +24,7 @@ app.use(express.json()); // Parses incoming JSON requests
 app.use(cors()); // Enables CORS for cross-origin requests
 app.use(express.urlencoded({ extended: true })); // Để xử lý form data
 app.use(cookieParser());
+app.use(methodOverride("_method")); // Method override
 
 // View engine setup
 app.set("view engine", "ejs");

@@ -82,8 +82,10 @@
                 <td><%= product.price %></td>
                 <td><%= product.author %></td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editProduct('<%= product._id %>')">Edit</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteProduct('<%= product._id %>')">Delete</button>
+                  <button class="btn btn-warning btn-sm" onclick="window.location.href='/admin/edit/<%= product._id %>'">Edit</button>
+                  <form method="POST" action="/api/products/<%= product._id %>?_method=DELETE">
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct('<%= product._id %>')">Delete</button>
+                  </form>
                 </td>
               </tr>
             <% }); %>

@@ -28,4 +28,41 @@ router.get('/', isAdmin, async (req, res) => {
   }
 });
 
+// Route GET /admin/edit/:id
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+    res.render('edit', { product }); // Render giao diện edit.ejs với dữ liệu sản phẩm
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error loading product');
+  }
+});
+
+// Route POST /admin/edit/:id
+router.post('/edit/:id', async (req, res) => {
+  try {
+    const { title, author, price, stock, description, publishDate, publisher } = req.body;
+    const image = req.file ? `/images/${req.file.filename}` : undefined; // Nếu có file ảnh mới
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      { title, author, price, stock, description, publishDate, publisher, ...(image && { image }) },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).send('Product not found');
+    }
+
+    res.redirect('/admin'); // Chuyển hướng về trang admin
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to update product');
+  }
+});
+
 module.exports = router;

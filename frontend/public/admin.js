@@ -46,46 +46,20 @@ document.getElementById('addProductForm').addEventListener('submit', function(ev
   }
 });
 
-// Hàm chỉnh sửa sản phẩm
+// Hàm chỉnh sửa sản phẩm (sẽ điều hướng tới giao diện edit.ejs)
 function editProduct(productId) {
-  fetch(`http://localhost:3000/api/products/${productId}`)
-    .then(response => {
-      if (!response.ok) throw new Error("Failed to fetch product");
-      return response.json();
-    })
-    .then(product => {
-      // Populate form data for editing
-      document.getElementById('name').value = product.title;
-      document.getElementById('description').value = product.description;
-      document.getElementById('price').value = product.price;
-      document.getElementById('stock').value = product.stock;
-      document.getElementById('productAuthor').value = product.author;
-      document.getElementById('productPublisher').value = product.publisher;
-      document.getElementById('productPublishDate').value = product.publishDate;
-
-      const form = document.getElementById('addProductForm');
-      form.dataset.productId = productId; // Đánh dấu trạng thái form
-      document.getElementById('submitButton').innerText = "Update Product";
-    })
-    .catch(error => {
-      console.error("Error:", error.message);
-      alert("Error loading product. Please try again.");
-    });
+  window.location.href = `/admin/edit/${productId}`; // Chuyển hướng đến trang chỉnh sửa sản phẩm
 }
 
 // Hàm xóa sản phẩm
 function deleteProduct(productId) {
   if (confirm("Are you sure you want to delete this product?")) {
-    fetch(`http://localhost:3000/api/products/${productId}`, {
-      method: "DELETE",
+    fetch(`/admin/delete/${productId}`, {
+      method: "POST",
     })
-      .then(response => {
-        if (!response.ok) throw new Error("Failed to delete product");
-        return response.json();
-      })
       .then(() => {
         alert("Product deleted successfully!");
-        displayProducts(); // Gọi lại hàm này để cập nhật giao diện
+        window.location.href = "/admin"; // Quay lại trang admin
       })
       .catch(error => {
         console.error("Error:", error.message);
@@ -94,13 +68,19 @@ function deleteProduct(productId) {
   }
 }
 
-// Hàm reset form về trạng thái ban đầu
+
+// Hàm reset form (chỉ dùng để thêm sản phẩm mới)
 function resetForm() {
   const form = document.getElementById('addProductForm');
   form.reset();
-  delete form.dataset.productId; // Xóa ID để trở về chế độ "thêm sản phẩm"
   document.getElementById('submitButton').innerText = "Add Product";
 }
+
+// Load danh sách sản phẩm khi trang được tải
+window.onload = () => {
+  console.log("Admin dashboard loaded");
+};
+
 
 // Hàm hiển thị danh sách sản phẩm
 function displayProducts() {
@@ -110,11 +90,16 @@ function displayProducts() {
       const productContainer = document.getElementById('productList');
       productContainer.innerHTML = ""; // Clear danh sách cũ
 
+      if (products.length === 0) {
+        productContainer.innerHTML = "<p>No products found</p>";  
+        return;
+      }      
+
       products.forEach(product => {
         const productElement = document.createElement('div');
         productElement.classList.add('product-item');
         productElement.innerHTML = `
-          <h3>${product.name}</h3>
+          <h3>${product.title}</h3>
           <p>${product.description}</p>
           <p>Price: $${product.price}</p>
           <p>Stock: ${product.stock}</p>
@@ -128,4 +113,4 @@ function displayProducts() {
 }
 
 // Load danh sách sản phẩm khi trang được tải
-window.onload = displayProducts;
+//window.onload = displayProducts;
