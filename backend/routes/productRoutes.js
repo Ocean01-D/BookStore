@@ -14,7 +14,7 @@ router.get("/:id", getProductById);  // Lấy thông tin sản phẩm theo ID
 
 // Admin Routes //test bỏ quyền admin protect, isAdmin,
 router.post("/", upload.single("image"), createProduct);    // Admin tạo sản phẩm mới
-router.put("/:id", updateProduct);  // Admin cập nhật sản phẩm
+router.post("/:id", updateProduct);  // Admin cập nhật sản phẩm
 router.delete("/:id", deleteProduct);  // Admin xóa sản phẩm
 
 

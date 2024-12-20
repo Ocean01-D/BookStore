@@ -62,7 +62,7 @@ const updateProduct = async (req, res) => {
   try {
     const { title, author, price, stock, description, publishDate, publisher } = req.body;
     const image = req.file ? `/images/${req.file.filename}` : undefined; // Cập nhật ảnh nếu có file mới
-
+    //console.log(req);  // Kiểm tra req.body và req.file
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       {

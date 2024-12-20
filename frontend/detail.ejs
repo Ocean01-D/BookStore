@@ -3,33 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Details</title>
+    <title>Chi Tiết Sách</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet"  href="/style.css"> <!--styles sang style -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet"> <!--thêm thư viện font-->
 </head>
 <body>
     <!-- Header -->
-    <header class="bg-success text-white py-2">
+    <header>
         <div class="container d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <img src="public/images/icon.png" alt="Logo" class="me-3" style="height: 50px; width: auto;">
-                <div>
-                    <h1 class="h5 mb-0">CÔNG TY CỔ PHẦN XUẤT BẢN</h1>
-                    <h2 class="h6 mb-0">VÀ TRUYỀN THÔNG IPM</h2>
+            <div class="header-logo d-flex align-items-center">
+                <div> <!--phông chữ mới-->
+                    <h1 class="h7 mb-0" style="font-family: 'Dancing Script', cursive; color: #9dea0f;">LyricShelf</h1>
+                    <h2 class="h5 mb-0" style="font-family: 'Dancing Script', cursive; color: rgb(189, 231, 22);">Thư Quán Xanh</h2>
                 </div>
             </div>
         </div>
     </header>
+ <!-- Book Details Section -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Hình ảnh sách -->
+        <div class="col-md-4">
+            <img src="<%= product.image %>" alt="<%= product.title %>" class="img-fluid rounded shadow">  <!--cải thiện hiệu ứng cho ảnh-->
+        </div>
 
-    <!-- Book Details Section -->
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-4">
-                <!-- Render Book Image -->
-                <img src="<%= product.image %>" alt="<%= product.title %>" class="img-fluid">
-            </div>
-            <div class="col-md-8">
-                <!-- Render Book Details -->
+        <!-- Chi tiết sách -->
+        <div class="col-md-8">
+            <div class="book-details-container">
                 <h2><%= product.title %></h2>
                 <p><strong>Tác giả:</strong> <%= product.author %></p>
                 <p><strong>Năm xuất bản:</strong> <%= product.publishDate %></p>
@@ -40,7 +41,14 @@
             </div>
         </div>
     </div>
+</div>
 
+    <!-- Footer --> <!--mới thêm vào footer-->
+    <footer>
+        <p>&copy; Trường Đại Học Công Nghệ Thông Tin UIT.</p>
+    </footer>
+
+    <script src="/scripts.js" defer></script> <!-- thêm phần scripts-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
