@@ -10,6 +10,7 @@ const multer = require('multer');
 const Product = require("./models/Product"); // Import model Product
 const cookieParser = require('cookie-parser');
 const methodOverride = require("method-override");
+const jwt = require("jsonwebtoken");
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -48,16 +49,38 @@ app.use("/api/products", productRoutes); // Routes for product-related actions
 app.use("/api/users", userRoutes); // Routes for user-related actions (e.g., register/login)
 app.use("/admin", require("./routes/adminRoutes")); // Routes for admin actions
 
+// Middleware lấy thông tin người dùng từ token
+app.use((req, res, next) => {
+  const token = req.cookies.token; // Lấy token từ cookie
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET); // Giải mã token
+      req.user = decoded; // Lưu thông tin user vào req để sử dụng ở các route
+    } catch (err) {
+      console.error("Invalid token:", err.message); // Log nếu token không hợp lệ
+    }
+  }
+  next(); // Tiếp tục middleware tiếp theo
+});
+
 // Default route
 app.get("/", async (req, res) => {
   try {
-    const products = await Product.find({}); // Lấy tất cả sản phẩm từ MongoDB
-    res.render("index", { title: "Trang chủ bán sách", Product: products }); // Truyền mảng Product vào EJS
+    const products = await Product.find({}); // Lấy danh sách sản phẩm
+    const user = req.user || null; // Lấy thông tin người dùng nếu đã đăng nhập
+    res.render("index", { title: "Trang chủ bán sách", Product: products, user });
   } catch (error) {
     console.error(error);
     res.status(500).send("Lỗi server khi tải trang!");
   }
 });
+
+// Route xử lý đăng xuất
+app.get("/logout", (req, res) => {
+  res.clearCookie("token"); // Xóa cookie chứa token
+  res.redirect("/"); // Chuyển hướng về trang chủ
+});
+
 
 // Trang admin
 app.get("/admin", async (req, res) => {

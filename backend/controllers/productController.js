@@ -106,21 +106,33 @@ const deleteProduct = async (req, res) => {
 };
 
 
-
-
-// @desc Search products by name
-// @route GET /api/products/search  
+// @desc Search products by name or description
+// @route GET /api/products/search
 const searchProducts = async (req, res) => {
   try {
-    const query = req.query.q || "";
+    const query = req.query.q || ""; // Lấy từ khóa tìm kiếm từ query string
     const regex = new RegExp(query, "i"); // Tìm kiếm không phân biệt hoa thường
-    const products = await Product.find({ title: regex }); // Tìm kiếm theo title
+    
+    // Tìm kiếm sản phẩm theo title hoặc description
+    const products = await Product.find({
+      $or: [
+        { title: regex },       // Tìm trong title
+        { description: regex }, // Tìm trong description
+      ],
+    });
+
+    // Kiểm tra nếu không có sản phẩm nào
+    if (products.length === 0) {
+      return res.status(404).json({ message: "Không tìm thấy sản phẩm nào." });
+    }
+
+    // Trả về danh sách sản phẩm tìm được
     res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error(error);
+    res.status(500).json({ message: "Lỗi máy chủ." });
   }
-};  
-
+};
 
 module.exports = {
   getProducts,
