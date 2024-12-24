@@ -7,7 +7,7 @@ const ProductSchema = new mongoose.Schema({
   stock: { type: Number, default: 0 },
   description: { type: String },
   image: { type: String },
-  publishDate: { type: Date },
+  publishDate: { type: Date, default: Date.now },
   publisher: { type: String },
 
 });

@@ -27,12 +27,12 @@
         <h2 class="mb-4">Edit Product</h2>
         
         <!-- Form to edit product -->
-        <form id="editProductForm" action="/api/products/<%= product._id %>" method="POST" class="mb-4">
+        <form id="editProductForm" action="/admin/edit/<%= product._id %>" method="POST" enctype="multipart/form-data" class="mb-4">  <!--action="/api/products/<%= product._id %>"-->
           
           <!-- Product Name -->
           <div class="form-group mb-3">
             <label for="name" class="form-label">Product Name</label>
-            <input type="text" id="name" name="name" value="<%= product.title %>" required class="form-control">
+            <input type="text" id="name" name="title" value="<%= product.title %>" required class="form-control">
           </div>
 
           <!-- Price -->
@@ -69,7 +69,7 @@
           <!-- Publish Date (auto-filled with product creation date, not editable) -->
           <div class="form-group mb-3">
             <label for="publishDate" class="form-label">Publish Date</label>
-            <input type="date" id="publishDate" name="publishDate" id="publishDate" name="publishDate" value="<%= product.publishDate %>" class="form-control" required>  <!--value="<%= product.publishDate.toISOString().split('T')[0] %>"-->
+            <input type="date" id="publishDate" name="publishDate" value="<%= product.publishDate ? new Date(product.publishDate).toISOString().split('T')[0] : '' %>" class="form-control" required> <!--value="<%= product.publishDate.toISOString().split('T')[0] %>"-->
           </div>
 
           <!-- Submit Button -->

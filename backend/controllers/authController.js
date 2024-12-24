@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
     // Kiểm tra nếu email đã tồn tại
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email is already registered' });
+      return res.status(400).json({ message: 'Email đã được sử dụng' });
     }
 
 
@@ -40,7 +40,7 @@ const registerUser = async (req, res) => {
     await newUser.save();
     res.redirect('/');
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error', details: err.message });
+    res.status(500).json({ error: 'Lỗi máy chủ nội bộ', details: err.message });
   }
 };
 
@@ -85,7 +85,7 @@ const loginUser = async (req, res) => {
     // So sánh mật khẩu dạng plain text
     if (password !== user.password) {
       console.log("Invalid password.");
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Thông tin xác thực không hợp lệ" });
     }
 
     // Tạo JWT token
@@ -95,7 +95,7 @@ const loginUser = async (req, res) => {
     res.redirect('/');
   } catch (err) {
     console.error("Error during login:", err.message);
-    res.status(500).json({ error: "Internal server error", details: err.message });
+    res.status(500).json({ error: "Lỗi máy chủ nội bộ", details: err.message });
   }
 };
 

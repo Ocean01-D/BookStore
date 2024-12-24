@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Product = require('../models/Product'); // Import model Product
+const upload = require('../middleware/uploadMiddleware'); // Import middleware upload
 
 // Middleware kiểm tra admin
 const isAdmin = (req, res, next) => {
@@ -43,8 +44,11 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 // Route POST /admin/edit/:id
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', upload.single('image') ,async (req, res) => {
   try {
+    console.log('Request Body:', req.body);
+    console.log('Uploaded File:', req.file);
+
     const { title, author, price, stock, description, publishDate, publisher } = req.body;
     const image = req.file ? `/images/${req.file.filename}` : undefined; // Nếu có file ảnh mới
 

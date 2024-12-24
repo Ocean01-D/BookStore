@@ -29,7 +29,7 @@ const getProductById = async (req, res) => {
 // @route POST /api/products
 const createProduct = async (req, res) => {
   try {
-    const { title, description, price, stock } = req.body; // Nhận trường 'title'
+    const { title, author, price, stock, description, publishDate, publisher } = req.body; // Nhận trường 'title'
     const image = req.file ? `/images/${req.file.filename}` : null; // Lấy đường dẫn ảnh từ multer
 
     // Kiểm tra các trường bắt buộc
@@ -40,10 +40,14 @@ const createProduct = async (req, res) => {
     // Tạo sản phẩm mới
     const newProduct = new Product({
       title,          // Thêm 'title' vào model
+      author,
       description,
       price,
       stock,
-      image,          // Đường dẫn ảnh
+      image,   // Đường dẫn ảnh
+      publishDate,
+      publisher,
+
     });
 
     await newProduct.save();

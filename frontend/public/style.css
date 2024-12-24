@@ -85,12 +85,24 @@ header img {
     object-fit: cover;
 }
 
-/* Banner */
+/* Banner đã sửa lại việc không chỉnh được */
 .banner {
+    display: flex; /* Sử dụng flex để căn chỉnh nội dung */
     justify-content: center;
     align-items: center;
-    max-height: 5%; /*đổi banner mới*/
+    max-height: 300px; /* Đặt chiều cao tối đa cho banner */
+    overflow: hidden;
 }
+
+.banner img {
+        width: 100%; 
+        height: auto; 
+        object-fit: contain; 
+        transform: scale(0.97); 
+        display: block; 
+        margin: 0 auto; 
+}
+
 
 /* Book Details Container / / thêm chi tiếc */
 .book-details-container {
@@ -168,3 +180,64 @@ footer {
     text-align: center;
     font-size: 0.9rem;
 }
+S
+/* Background Section */
+.background-section {
+    background-image: url('backend/public/images/backg.jpeg'); /* Đường dẫn ảnh nền */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ */
+    background-position: center; /* Căn giữa ảnh */
+    background-repeat: no-repeat; /* Không lặp ảnh */
+    position: relative; /* Để các phần tử bên trong sử dụng z-index */
+    padding: 50px 0; /* Khoảng cách trên và dưới */
+}
+
+/* Book Card Styles */
+/* Background Section */
+.background-section {
+    background-image: url('/images/backg.jpeg'); /* Đường dẫn ảnh nền */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ */
+    background-position: center; /* Căn giữa ảnh */
+    background-repeat: no-repeat; /* Không lặp ảnh */
+    position: relative; /* Để các phần tử bên trong sử dụng z-index */
+    padding: 50px 0; /* Khoảng cách trên và dưới */
+    z-index: 1; /* Background nằm ở lớp dưới cùng */
+}
+
+/* Card Styles */
+.book-card {
+    background-color: rgb(255, 255, 255); /* Nền trắng mờ */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bóng mờ */
+    position: relative; /* Nằm trên background */
+    z-index: 2; /* Card nằm trên background */
+}
+
+.book-card .card-img-top {
+    max-height: 200px; /* Chiều cao tối đa của ảnh */
+    object-fit: cover; /* Cắt ảnh để phù hợp với khung */
+}
+
+.leaf {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('/images/leaf.png'); /* Đường dẫn tới hình ảnh lá */
+    background-size: cover;
+    animation: fall linear infinite;
+    z-index: -1; /* Đảm bảo lá rơi phía sau các phần tử khác */
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+

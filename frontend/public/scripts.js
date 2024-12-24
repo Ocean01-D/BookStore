@@ -130,3 +130,12 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     }
   });
   
+  //thêm hiệu ứng lá rơi
+  document.addEventListener('DOMContentLoaded', function() {
+    const leaves = document.querySelectorAll('.leaf');
+    leaves.forEach(leaf => {
+        leaf.style.top = `${Math.random() * -100}px`;
+        leaf.style.left = `${Math.random() * 100}vw`;
+        leaf.style.animationDuration = `${Math.random() * 5 + 5}s`;
+    });
+});
